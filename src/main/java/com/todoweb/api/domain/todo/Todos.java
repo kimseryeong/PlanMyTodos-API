@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.ColumnDefault;
 
 import com.todoweb.api.domain.user.Users;
+import com.todoweb.api.dto.TodoDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -61,4 +62,7 @@ public class Todos {
 		this.startAt = startAt;
 		this.endAt = endAt;
 	}
+	
+	
+	
 }

@@ -11,5 +11,5 @@ import com.todoweb.api.domain.user.Users;
 public interface TodoRespository extends JpaRepository<Todos, Long> {
 
 	// user 객체를 기준으로 todolist 조회
-	List<Todos> findByUser(Users user);
+	List<Todos> findByUsers(Users users);
 }
