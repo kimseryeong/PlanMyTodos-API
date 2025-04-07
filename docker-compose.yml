@@ -1,0 +1,16 @@
+version: '3.8'                          #Docker Compose 문법 버전
+services:
+  postgres:                             #PostgreSQL 컨테이너 정의
+    image: postgres:16                  #사용하려는 이미지 (PostgreSQL 16버전)
+    container_name: todo-postgres       #컨테이너 명
+    restart: always                     #자동 재시작 설정
+    environment:                        #내부 환경 변수 설정(초기유저/DB 생성용)
+      POSTGRES_USER: todo_user
+      POSTGRES_PASSWORD: todo_pass
+      POSTGRES_DB: todo_api
+    ports:                              #외부 -> 내부 컨테이너로 연결할 포트 매핑
+      - "5433:5432"
+    volumes:                            #컨테이너가 지워져도 데이터는 유지되는 저장소 (pgdata라는 볼륨에 연결)
+      - pgdata:/var/lib/postgresql/data
+volumes:                                #위에서 정의한 볼륨 실제로 생성 (안쓰면 컨테이너 삭제 시 DB 같이 날라감)
+  pgdata:
