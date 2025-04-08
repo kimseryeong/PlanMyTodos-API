@@ -1,4 +1,4 @@
-package com.todoweb.api.dto;
+package com.todoweb.api.dto.todo;
 
 import java.time.LocalDateTime;
 
@@ -13,15 +13,15 @@ import lombok.Getter;
 @Getter
 public class TodoDTO {
 
-	private String email;
+	private Long id;
 	private String title;
 	private boolean completed;
 	private String content;
 	private LocalDateTime startAt;
 	private LocalDateTime endAt;
 		
-	public TodoDTO(String email, String title, boolean completed, String content, LocalDateTime startAt, LocalDateTime endAt) {
-		this.email = email;
+	public TodoDTO(Long id, String title, boolean completed, String content, LocalDateTime startAt, LocalDateTime endAt) {
+		this.id = id;
 		this.title = title;
 		this.completed = completed;
 		this.content = content;
@@ -30,13 +30,12 @@ public class TodoDTO {
 	}
 	
 	//TodoDTO::new 사용하기 위해 Entity -> DTO 변환하는 생성자
-	public TodoDTO(Todos todo) {
-		this.email = todo.getEmail();
-		this.title = todo.getTitle();
-		this.completed = todo.isCompleted();
-		this.content = todo.getContent();
-		this.startAt = todo.getStartAt();
-		this.endAt = todo.getEndAt();
+	public TodoDTO(Todos entity) {
+		this.title = entity.getTitle();
+		this.completed = entity.isCompleted();
+		this.content = entity.getContent();
+		this.startAt = entity.getStartAt();
+		this.endAt = entity.getEndAt();
 		
 	}
 }
