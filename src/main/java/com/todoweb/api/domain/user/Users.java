@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.todoweb.api.domain.BaseTimeEntity;
 import com.todoweb.api.domain.todo.Todos;
+import com.todoweb.api.dto.user.UserDTO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -24,7 +26,7 @@ import lombok.NoArgsConstructor;
 @Table
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
-public class Users {
+public class Users extends BaseTimeEntity{
 
 	@Id @GeneratedValue(strategy = GenerationType.UUID)
 	private UUID uuid;
@@ -49,5 +51,10 @@ public class Users {
 		this.password = password;
 		this.loginType = loginType;
 		this.token = token;
+	}
+	
+	public Users(UserDTO dto) {
+		this.email = dto.getEmail();
+		this.password = dto.getPassword();
 	}
 }

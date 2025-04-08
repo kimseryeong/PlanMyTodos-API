@@ -4,8 +4,9 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.ColumnDefault;
 
+import com.todoweb.api.domain.BaseTimeEntity;
 import com.todoweb.api.domain.user.Users;
-import com.todoweb.api.dto.TodoDTO;
+import com.todoweb.api.dto.todo.TodoDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,29 +26,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Builder
-public class Todos {
+public class Todos extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(nullable = false)
-	private String email;
-	
-	@Column(nullable = false)
 	private String title;
 	
 	@Column(nullable = false)
-	@ColumnDefault("false")
-	private boolean completed;
+	private boolean completed = false;
 	
 	private String content;
 	
 	private LocalDateTime startAt;
 	private LocalDateTime endAt;
-	
-	private LocalDateTime createdAt;
-	private LocalDateTime updatedAt;
 	
 	@ManyToOne
 	@JoinColumn(name="user_uuid")
@@ -55,14 +49,13 @@ public class Todos {
 	
 	@Builder
 	public Todos(String email, String title, boolean completed, String content, LocalDateTime startAt, LocalDateTime endAt) {
-		this.email = email;
 		this.title = title;
 		this.completed = completed;
 		this.content = content;
 		this.startAt = startAt;
 		this.endAt = endAt;
 	}
-	
+
 	
 	
 }
