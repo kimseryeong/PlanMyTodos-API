@@ -2,11 +2,8 @@ package com.todoweb.api.domain.todo;
 
 import java.time.LocalDateTime;
 
-import org.hibernate.annotations.ColumnDefault;
-
 import com.todoweb.api.domain.BaseTimeEntity;
 import com.todoweb.api.domain.user.Users;
-import com.todoweb.api.dto.todo.TodoDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -48,12 +45,13 @@ public class Todos extends BaseTimeEntity {
 	private Users users;
 	
 	@Builder
-	public Todos(String email, String title, boolean completed, String content, LocalDateTime startAt, LocalDateTime endAt) {
+	public Todos(String email, String title, boolean completed, String content, LocalDateTime startAt, LocalDateTime endAt, Users users) {
 		this.title = title;
 		this.completed = completed;
 		this.content = content;
 		this.startAt = startAt;
 		this.endAt = endAt;
+		this.users = users;
 	}
 
 	

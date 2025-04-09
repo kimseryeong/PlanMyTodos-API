@@ -29,6 +29,7 @@ import lombok.NoArgsConstructor;
 public class Users extends BaseTimeEntity{
 
 	@Id @GeneratedValue(strategy = GenerationType.UUID)
+	@Column(nullable = false)
 	private UUID uuid;
 	
 	@Column(nullable = false, unique = true)
@@ -42,11 +43,12 @@ public class Users extends BaseTimeEntity{
 	
 	private String token;
 	
-	@OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
-	private List<Todos> todos = new ArrayList<>();
+	@OneToMany(mappedBy = "users", cascade = CascadeType.PERSIST)
+	private List<Todos> todoList = new ArrayList<>();
 	
 	@Builder
-	public Users(String email, String password, LoginType loginType, String token) {
+	public Users(UUID uuid, String email, String password, LoginType loginType, String token) {
+		this.uuid = uuid;
 		this.email = email;
 		this.password = password;
 		this.loginType = loginType;

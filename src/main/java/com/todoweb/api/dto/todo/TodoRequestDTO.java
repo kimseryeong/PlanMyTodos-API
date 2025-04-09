@@ -2,9 +2,6 @@ package com.todoweb.api.dto.todo;
 
 import java.time.LocalDateTime;
 
-import com.todoweb.api.domain.todo.Todos;
-import com.todoweb.api.domain.user.Users;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
