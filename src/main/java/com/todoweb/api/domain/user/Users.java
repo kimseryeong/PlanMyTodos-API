@@ -28,7 +28,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Users extends BaseTimeEntity{
 
-	@Id @GeneratedValue(strategy = GenerationType.UUID)
+	@Id 
+	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(nullable = false)
 	private UUID uuid;
 	

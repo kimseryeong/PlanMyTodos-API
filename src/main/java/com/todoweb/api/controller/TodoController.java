@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.todoweb.api.domain.user.UserRepository;
+import com.todoweb.api.domain.user.Users;
 import com.todoweb.api.dto.todo.TodoRequestDTO;
 import com.todoweb.api.dto.todo.TodoResponseDTO;
 import com.todoweb.api.service.TodoService;
@@ -24,31 +26,37 @@ public class TodoController {
 	@Autowired
 	private TodoService todoService;
 	
-	//private final UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 	
-	@GetMapping("/fetch")
+	@GetMapping("/fetchAllTodosByUser")
 	public ResponseEntity<?> fetchTodos(){
 		try {
 			
+			String testEmail = "test@test.com";
+			Users testUser = userRepository.findByEmail(testEmail);
 			
-			//List<TodoDTO> fetchedtodos = todoService.fetch();
-			return ResponseEntity.ok().body(null);
+			List<TodoResponseDTO> fetchedtodos = todoService.fetchAllTodosByUser(testUser);
+			
+			return ResponseEntity.ok().body(fetchedtodos);
 		}
 		catch(RuntimeException e) {
-			log.debug("RuntimeException msg: {}", e.getMessage());
+			log.debug("While fetchAllTodosByUser... RuntimeException msg: {}", e.getMessage());
+			e.printStackTrace();
 			
 			return ResponseEntity.badRequest().build();
 		}
 	}
 	
-	@PostMapping("/create")
+	@PostMapping("/createTodo")
 	public ResponseEntity<?> createTodo(@RequestBody TodoRequestDTO dto){
 		try {
-			List<TodoResponseDTO> createdtodos = todoService.create(dto);
+			TodoResponseDTO createdtodos = todoService.create(dto);
 			return ResponseEntity.ok().body(createdtodos);
 		}
 		catch(RuntimeException e) {
-			log.debug("RuntimeException msg: {}", e.getMessage());
+			log.debug("Whiel createTodo ... RuntimeException msg: {}", e.getMessage());
+			e.printStackTrace();
 			
 			return ResponseEntity.badRequest().build();
 		}

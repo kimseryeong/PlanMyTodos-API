@@ -1,6 +1,7 @@
 package com.todoweb.api.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -31,7 +32,7 @@ public class TodoService {
 	 * @return
 	 */
 	@Transactional(readOnly = true)
-	public List<TodoResponseDTO> fetch(Users users){
+	public List<TodoResponseDTO> fetchAllTodosByUser(Users users){
 		
 		return todoRespository.findByUsers(users)
 				.stream()
@@ -46,17 +47,12 @@ public class TodoService {
 	 * @throws Exception 
 	 */
 	@Transactional
-	public List<TodoResponseDTO> create(TodoRequestDTO dto){
+	public TodoResponseDTO create(TodoRequestDTO dto){
 		
 		try {
-			//test user 객체 임의 생성
-			Users testUser = Users.builder()
-					.email("test@test.com")
-					.password("1234")
-					.build();
+			String testEmail = "test@test.com";
 			
-			Users savedUser = userRepository.save(testUser);
-			log.debug("savedUser: {}", savedUser);
+			Users testUser = userRepository.findByEmail(testEmail);
 			
 			Todos entity = Todos.builder()
 					.title(dto.getTitle())
@@ -64,20 +60,35 @@ public class TodoService {
 					.completed(dto.isCompleted())
 					.startAt(dto.getStartAt())
 					.endAt(dto.getEndAt())
-					.users(savedUser)
+					.users(testUser)
 					.build();
 			
 			log.debug("create entity: {}", entity);
 			
-			todoRespository.save(entity);
+			Todos savedEntity = todoRespository.save(entity);
+
+			TodoResponseDTO savedTodo = TodoResponseDTO.fromEntity(savedEntity);
 			
-			return fetch(testUser);
+			return savedTodo;
 		}
-		catch(Exception e) {
+		catch(RuntimeException e) {
 			log.debug("error: {}", e.getMessage());
 			log.error("error during save: ", e); // 전체 스택 찍어보기!
 		    return null;
 		}
 		
+	}
+	
+	public Users saveTestUser() {
+		//test user 객체 임의 생성
+		Users testUser = Users.builder()
+				.email("test@test.com")
+				.password("1234")
+				.build();
+		
+		Users savedUser = userRepository.save(testUser);
+		log.debug("savedUser: {}", savedUser);
+		
+		return savedUser;
 	}
 }
