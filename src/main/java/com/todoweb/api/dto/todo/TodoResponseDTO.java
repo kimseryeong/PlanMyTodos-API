@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TodoResponseDTO {
 
-	private Long id;
+	private Long id; 
 	private String title;
 	private boolean completed;
 	private String content;
@@ -26,6 +26,7 @@ public class TodoResponseDTO {
 	//Entity -> DTO
 	public static TodoResponseDTO fromEntity(final Todos entity) {
 		return TodoResponseDTO.builder()
+				.id(entity.getId())
 		        .title(entity.getTitle())
 		        .completed(entity.isCompleted())
 		        .content(entity.getContent())

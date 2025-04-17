@@ -13,6 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TodoRequestDTO {
 	
+	private Long id;
     private String title;
     private boolean completed;
     private String content;

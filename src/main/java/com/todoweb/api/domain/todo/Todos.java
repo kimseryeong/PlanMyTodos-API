@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.todoweb.api.domain.BaseTimeEntity;
 import com.todoweb.api.domain.user.Users;
+import com.todoweb.api.dto.todo.TodoRequestDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,12 +15,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Builder
@@ -54,6 +57,12 @@ public class Todos extends BaseTimeEntity {
 		this.users = users;
 	}
 
-	
+	public void updateInfo(TodoRequestDTO dto) {
+		this.title = dto.getTitle();
+		this.completed = dto.isCompleted();
+		this.content = dto.getContent();
+		this.startAt = dto.getStartAt();
+		this.endAt = dto.getEndAt();
+	}
 	
 }

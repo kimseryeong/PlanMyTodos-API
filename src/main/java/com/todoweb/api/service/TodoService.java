@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,18 +24,22 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class TodoService {
 
+	@Autowired
     private final UserRepository userRepository;
 
-	private final TodoRespository todoRespository;
+	@Autowired
+	private final TodoRespository todoRepository;
+	
+	String testEmail = "test@test.com";
 	
 	/**
-	 * 조회
+	 * 전체 목록 조회
 	 * @return
 	 */
 	@Transactional(readOnly = true)
-	public List<TodoResponseDTO> fetchAllTodosByUser(Users users){
+	public List<TodoResponseDTO> fetchAllTodos(Users users){
 		
-		return todoRespository.findByUsers(users)
+		return todoRepository.findByUsers(users)
 				.stream()
 				.map(TodoResponseDTO::fromEntity)
 				.collect(Collectors.toList());
@@ -50,7 +55,6 @@ public class TodoService {
 	public TodoResponseDTO create(TodoRequestDTO dto){
 		
 		try {
-			String testEmail = "test@test.com";
 			
 			Users testUser = userRepository.findByEmail(testEmail);
 			
@@ -65,7 +69,7 @@ public class TodoService {
 			
 			log.debug("create entity: {}", entity);
 			
-			Todos savedEntity = todoRespository.save(entity);
+			Todos savedEntity = todoRepository.save(entity);
 
 			TodoResponseDTO savedTodo = TodoResponseDTO.fromEntity(savedEntity);
 			
@@ -79,8 +83,68 @@ public class TodoService {
 		
 	}
 	
+	/**
+	 * 수정
+	 * @param dto
+	 * @return
+	 */
+	@Transactional
+	public TodoResponseDTO update(TodoRequestDTO dto, String userEmail) {
+		try {
+			
+			Todos todo = todoRepository.findById(dto.getId())
+					.orElseThrow(() -> new RuntimeException("Not found"));
+			
+			Users todoUser = todo.getUsers();
+			
+			if(!todoUser.getEmail().equals(userEmail)) {
+				new RuntimeException("No Permission User to update");
+			}
+			
+			todo.updateInfo(dto);
+			
+			return TodoResponseDTO.fromEntity(todo);
+			
+		}
+		catch(RuntimeException e) {
+			log.debug("error: {}", e.getMessage());
+			log.error("error during save: ", e);
+		    return null;
+		}
+	}
+	
+	/**
+	 * 삭제
+	 * @param todoId
+	 * @param userEmail
+	 * @return
+	 */
+	@Transactional
+	public List<TodoResponseDTO> delete(Long todoId, String userEmail){
+		try {
+			Todos todo = todoRepository.findById(todoId)
+					.orElseThrow(() -> new RuntimeException("Not found"));
+			
+			Users todoUser = todo.getUsers();
+			
+			if(!todoUser.getEmail().equals(userEmail)) {
+				new RuntimeException("No Permission User to update");
+			}
+			
+			todoRepository.deleteById(todoId);
+			
+			return fetchAllTodos(todoUser);
+			
+		}
+		catch(RuntimeException e) {
+			log.debug("error: {}", e.getMessage());
+			log.error("error during save: ", e);
+			return null;
+		}
+	}
+	
+	//test user 객체 임의 생성
 	public Users saveTestUser() {
-		//test user 객체 임의 생성
 		Users testUser = Users.builder()
 				.email("test@test.com")
 				.password("1234")
