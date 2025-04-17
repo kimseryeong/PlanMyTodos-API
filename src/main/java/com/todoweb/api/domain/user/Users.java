@@ -7,6 +7,7 @@ import java.util.UUID;
 import com.todoweb.api.domain.BaseTimeEntity;
 import com.todoweb.api.domain.todo.Todos;
 import com.todoweb.api.dto.user.UserDTO;
+import com.todoweb.api.dto.user.UserRequestDTO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -56,7 +57,7 @@ public class Users extends BaseTimeEntity{
 		this.token = token;
 	}
 	
-	public Users(UserDTO dto) {
+	public Users(UserRequestDTO dto) {
 		this.email = dto.getEmail();
 		this.password = dto.getPassword();
 	}

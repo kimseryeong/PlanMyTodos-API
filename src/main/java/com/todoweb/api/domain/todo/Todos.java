@@ -45,7 +45,7 @@ public class Todos extends BaseTimeEntity {
 	private Users users;
 	
 	@Builder
-	public Todos(String email, String title, boolean completed, String content, LocalDateTime startAt, LocalDateTime endAt, Users users) {
+	public Todos(String title, boolean completed, String content, LocalDateTime startAt, LocalDateTime endAt, Users users) {
 		this.title = title;
 		this.completed = completed;
 		this.content = content;

@@ -18,7 +18,8 @@ public class UserDTO {
 	
 
 	@Builder
-	public UserDTO(String email, String password) {
+	public UserDTO(UUID uuid, String email, String password) {
+		this.uuid = uuid;
 		this.email = email;
 		this.password = password;
 	}
