@@ -23,17 +23,17 @@ PlanMyTodos Server Refactoring: Backend refactored from `Supabase` to `Spring Bo
 |----|----|
 | **Backend** | `Springboot`, `JPA`, `PostgreSQL`(via `Docker`) |
 | **Frontend** | `React`, `Typescript` |
-| **Deployment** | `Netlify`, `Koyeb` |
+| **Deployment** | `Netlify`, `Railway` |
 |||
 
 <br>
 
 ### 🧠 Domain-Driven Design (DDD)
 
-**✔️ Entity**: `Users`, `Todos`
+**🔹 Entity**: `Users`, `Todos`
 <br>
 
-**✔️ Folder Structure**
+**🔹 Folder Structure**
 
 ```
 📂 src/
@@ -45,3 +45,10 @@ PlanMyTodos Server Refactoring: Backend refactored from `Supabase` to `Spring Bo
 ├── 📂 dto/                   | data transfer objects (dto) for request and response mapping
 └── 📂 config/                | manage configuration (CORS, security, etc)
 ```
+
+<br>
+
+### 💢 TroubleShooting
+
+🔥 [Deploy to Railway]('/troubleshootings/railway.md')
+<br>
