@@ -1,8 +1,11 @@
 package com.todoweb.api.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +38,7 @@ public class TodoController {
 
 	String testEmail = "test@test.com";
 	
-	@GetMapping("/fetchAllTodosByUser")
+	@GetMapping("/fetchAllTodos")
 	public ResponseEntity<?> fetchTodos(){
 		try {
 			
@@ -46,10 +49,10 @@ public class TodoController {
 			return ResponseEntity.ok().body(fetchedTodos);
 		}
 		catch(RuntimeException e) {
-			log.debug("While fetchAllTodosByUser... error: {}", e.getMessage());
+			log.debug("While fetchAllTodos... error: {}", e.getMessage());
 			e.printStackTrace();
 			
-			return ResponseEntity.badRequest().build();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("INTERNAL_SERVER_ERROR");
 		}
 	}
 	
