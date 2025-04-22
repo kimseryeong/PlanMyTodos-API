@@ -82,10 +82,11 @@ I needed to properly set up the database environment variable in the Backend Rai
 <br>
 
 3. After setting the variable, a `Deploy` button will appear on the Backend deployment. Click it to redeploy.
-
+    ![evn3](./images/env3.png)
+   
 <br>
 
-4. All Done <br>
+5. All Done <br>
     ![evn2](./images/env2.png)
 
 <br>
