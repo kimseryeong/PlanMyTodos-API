@@ -3,6 +3,9 @@ package com.todoweb.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +16,7 @@ import com.todoweb.api.dto.user.SignUpRequestDTO;
 import com.todoweb.api.dto.user.UserResponseDTO;
 import com.todoweb.api.service.UserService;
 
+import ch.qos.logback.core.model.Model;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -51,4 +55,15 @@ public class UserController<T> {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("잘못된 요청");
 		}
 	}
+	
+	@GetMapping("/loginSuccess")
+    public ResponseEntity<?> loginSuccess(@AuthenticationPrincipal OAuth2User oauth2User) {
+        System.out.println("소셜 로그인 성공: " + oauth2User.getName());
+        
+        
+        log.info("email: {}", oauth2User.getAttribute("email").toString());
+        
+        return ResponseEntity.ok().body(oauth2User.getAttribute("email").toString());
+    }
+
 }

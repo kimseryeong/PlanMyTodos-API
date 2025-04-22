@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.todoweb.api.common.status.Role;
 import com.todoweb.api.domain.BaseTimeEntity;
 import com.todoweb.api.domain.todo.Todos;
 import com.todoweb.api.dto.user.SignUpRequestDTO;
@@ -50,16 +51,20 @@ public class Users extends BaseTimeEntity{
 	
 	private String token;
 	
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+	private Role role;
+	
 	@OneToMany(mappedBy = "users", cascade = CascadeType.PERSIST)
 	private List<Todos> todoList = new ArrayList<>();
 	
 	@Builder
-	public Users(UUID uuid, String email, String password, LoginType loginType, String token) {
+	public Users(UUID uuid, String email, String password, LoginType loginType, Role role) {
 		this.uuid = uuid;
 		this.email = email;
 		this.password = password;
 		this.loginType = loginType;
-		this.token = token;
+		this.role = role;
 	}
 	
 	public Users(SignUpRequestDTO dto) {
@@ -71,4 +76,8 @@ public class Users extends BaseTimeEntity{
 		this.email = dto.getEmail();
 		this.password = dto.getPassword();
 	}
+	
+	public String getRoleKey() {
+        return this.role.getKey();
+    }
 }
