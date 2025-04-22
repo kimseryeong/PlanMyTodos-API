@@ -29,7 +29,8 @@ public class SecurityConfig {
 			.formLogin(form -> form.disable())
 	        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
 	        .authorizeHttpRequests(auth -> auth
-				.requestMatchers("/", "/user/**", "/oauth2/**").permitAll()
+	        		.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+        		//.requestMatchers("/", "/user/**", "/oauth2/**").permitAll()
 				.anyRequest().authenticated()
 			)
 			.formLogin(form -> form
