@@ -1,23 +1,26 @@
 package com.todoweb.api.dto.user;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
- * 사용자 요청 DTO
+ * 로그인 요청 DTO
  */
 
 @Builder
-@Data
 @Getter
-public class UserRequestDTO {
+@Setter
+@NoArgsConstructor
+public class LoginRequestDTO {
 	private String email;
 	private String password;
 
 	@Builder
-	public UserRequestDTO(String email, String password) {
+	public LoginRequestDTO(String email, String password) {
 		this.email = email;
 		this.password = password;
 	}
+	
 }
