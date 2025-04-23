@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.todoweb.api.common.auth.dto.SessionUser;
 import com.todoweb.api.dto.user.LoginRequestDTO;
 import com.todoweb.api.dto.user.SignUpRequestDTO;
 import com.todoweb.api.dto.user.UserResponseDTO;
 import com.todoweb.api.service.UserService;
 
 import ch.qos.logback.core.model.Model;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -26,6 +28,9 @@ public class UserController<T> {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private HttpSession httpSession;
 	
 	@PostMapping("/signup")
 	public ResponseEntity<?> signUp(@RequestBody SignUpRequestDTO dto){
@@ -65,5 +70,17 @@ public class UserController<T> {
         
         return ResponseEntity.ok().body(oauth2User.getAttribute("email").toString());
     }
+	
+	@GetMapping("/me")
+	public ResponseEntity<SessionUser> getUserSession(){
+		
+		SessionUser user = (SessionUser) httpSession.getAttribute("user");
+		
+		if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+		
+        return ResponseEntity.ok(user); 
+	}
 
 }

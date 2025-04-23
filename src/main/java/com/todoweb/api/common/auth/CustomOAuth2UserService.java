@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import com.todoweb.api.common.auth.dto.OAuthAttributes;
+import com.todoweb.api.common.auth.dto.SessionUser;
 import com.todoweb.api.common.status.Role;
 import com.todoweb.api.domain.user.LoginType;
 import com.todoweb.api.domain.user.UserRepository;
@@ -30,7 +31,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 	@Autowired
     private final UserRepository userRepository;
 	
-	private HttpSession httpSession;
+	@Autowired
+	private final HttpSession httpSession;
 	
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException{
@@ -51,9 +53,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         String userEmail = attributes.getEmail();
 		log.info("userEmail: {}", userEmail);
 		log.info("exitsByEmail: {}", userRepository.existsByEmail(userEmail));
-    		
+    	
+		Users user = null;
+		
         if(!userRepository.existsByEmail(userEmail)) {
-        	Users user = Users.builder()
+        	user = Users.builder()
 	        				.email(userEmail)
 	        				.loginType(LoginType.GOOGLE)
 	        				.role(Role.USER)
@@ -62,11 +66,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         	userRepository.save(user);
         }
         else {
-        	userRepository.findByEmail(userEmail);
-        	
+        	user = userRepository.findByEmail(userEmail);
         }
         
-        //httpSession.setAttribute("user", new SessionUser(user));
+        httpSession.setAttribute("user", new SessionUser(user));
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
@@ -75,24 +78,4 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
 	}
 	
-//	@Override
-//    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-//        // 여기에 구글 사용자 정보 받아서 User 객체로 매핑하는 로직 작성
-//        OAuth2User oAuth2User = new DefaultOAuth2UserService().loadUser(userRequest);
-//
-//        // 사용자 정보 꺼내기
-//        String registrationId = userRequest.getClientRegistration().getRegistrationId(); // google
-//        String userNameAttributeName = userRequest.getClientRegistration()
-//            .getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
-//
-//        Map<String, Object> attributes = oAuth2User.getAttributes();
-//
-//        // 여기서 email 등 필요한 정보 추출해서 회원가입 or 로그인 처리
-//
-//        return new DefaultOAuth2User(
-//            Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
-//            attributes,
-//            userNameAttributeName
-//        );
-//    }
 }
