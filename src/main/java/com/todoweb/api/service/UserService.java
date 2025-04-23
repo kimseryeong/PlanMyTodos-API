@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.todoweb.api.common.status.Role;
 import com.todoweb.api.domain.user.LoginType;
 import com.todoweb.api.domain.user.UserRepository;
 import com.todoweb.api.domain.user.Users;
@@ -72,6 +73,7 @@ public class UserService {
 				.email(dto.getEmail())
 				.password(encodedPassword)
 				.loginType(LoginType.LOCAL)
+				.role(Role.USER)
 				.build();
 		
 		Users savedEntity = userRepository.save(entity);
