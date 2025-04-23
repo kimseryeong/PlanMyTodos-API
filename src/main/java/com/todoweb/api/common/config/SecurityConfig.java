@@ -31,40 +31,25 @@ public class SecurityConfig {
 		http
 	        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 	        .authorizeHttpRequests(requests -> requests
-        		.requestMatchers("/", "/user/**", "/oauth2/**").permitAll()
-	            .anyRequest().permitAll())
-	        .oauth2Login(Customizer.withDefaults()); // 사용자 정의 로그인 페이지 경로 (선택 사항)
+	        		.requestMatchers("/", "/user/**", "/oauth2/**").permitAll()
+		            .anyRequest().permitAll()
+            )
+	        .oauth2Login(oauth -> oauth
+	        		.userInfoEndpoint(userInfo -> userInfo
+	        				.userService(customOAuth2UserService)
+    				)
+	        		.defaultSuccessUrl("http://localhost:3000", true)
+	        		
+    		);
 		
 	    return http.build();
-//		http
-//			.csrf(csrf -> csrf.disable())
-//			.httpBasic(httpBasic -> httpBasic.disable())
-//			.formLogin(form -> form.disable())
-//	        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
-//	        .authorizeHttpRequests(auth -> auth
-//	        		.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-//        		//.requestMatchers("/", "/user/**", "/oauth2/**").permitAll()
-//				.anyRequest().authenticated()
-//			)
-//			.formLogin(form -> form
-//                .loginPage("/login")
-//                .defaultSuccessUrl("/")
-//                .permitAll()
-//            )
-//			.oauth2Login(Customizer.withDefaults())
-//			.logout(logout -> logout
-//                .logoutSuccessUrl("/")
-//                .permitAll()
-//            );
-//			
-//		return http.build();
 	}
 	
 	@Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        configuration.setAllowedOrigins(List.of("https://your-netlify-app-name.netlify.app", "http://localhost:3000")); // Netlify 앱 URL
+        configuration.setAllowedOrigins(List.of("https://planmytodos.netlify.app", "http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true); // 쿠키 및 인증 정보 공유 허용

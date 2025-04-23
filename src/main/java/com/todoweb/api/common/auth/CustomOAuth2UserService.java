@@ -13,6 +13,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import com.todoweb.api.common.auth.dto.OAuthAttributes;
+import com.todoweb.api.common.status.Role;
+import com.todoweb.api.domain.user.LoginType;
 import com.todoweb.api.domain.user.UserRepository;
 import com.todoweb.api.domain.user.Users;
 
@@ -25,12 +27,14 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User>{
 
-	private UserRepository userRepository;
+	@Autowired
+    private final UserRepository userRepository;
 	
 	private HttpSession httpSession;
 	
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException{
+		
 		OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
         
@@ -43,12 +47,23 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
-        log.info("attributes: {}", attributes);
         
-        Users user = userRepository.findByEmail(attributes.getEmail());
-        
-        if(!userRepository.existsByEmail(attributes.getEmail())) {
+        String userEmail = attributes.getEmail();
+		log.info("userEmail: {}", userEmail);
+		log.info("exitsByEmail: {}", userRepository.existsByEmail(userEmail));
+    		
+        if(!userRepository.existsByEmail(userEmail)) {
+        	Users user = Users.builder()
+	        				.email(userEmail)
+	        				.loginType(LoginType.GOOGLE)
+	        				.role(Role.USER)
+	        				.build();
+        	
         	userRepository.save(user);
+        }
+        else {
+        	userRepository.findByEmail(userEmail);
+        	
         }
         
         //httpSession.setAttribute("user", new SessionUser(user));
@@ -58,7 +73,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 attributes.getAttributes(),
                 attributes.getNameAttributeKey());
 
-        //userRepository.save(null)
 	}
 	
 //	@Override
