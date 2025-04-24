@@ -14,7 +14,7 @@ PlanMyTodos Server Refactoring: Backend refactored from `Supabase` to `Spring Bo
 > <br>
 > ✔️ Google OAuth Login
 > <br>
-> ✔️ SignUp & Login
+> ✔️ Srping Security SignUp & Login
 
 <br>
 
@@ -22,7 +22,7 @@ PlanMyTodos Server Refactoring: Backend refactored from `Supabase` to `Spring Bo
 |||
 |----|----|
 | **Backend** | `Springboot`, `JPA`, `PostgreSQL`(via `Docker`) |
-| **Frontend** | `React`, `Typescript` |
+| **Frontend** | `React`, `Javascript` |
 | **Deployment** | `Netlify`, `Railway` |
 |||
 
