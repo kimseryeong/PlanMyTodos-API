@@ -60,3 +60,29 @@ Configure the settings so that the proxy recognizes the actual requests as HTTPS
 
 server.forward-headers-strategy=native
 ```
+
+## 3️⃣ Unauthorized in real server (railway & netlify)
+
+I encountered this issue when I tested google oauth login after deployment in real server 
+
+### ⚠️ Error Log
+
+```
+GET https://planmytodos-api-production.up.railway.app/user/me net::ERR_ABORTED 401 (Unauthorized)
+```
+
+F12 -> Network -> Set-Cookie: `JSESSIONID=.....; Path=/; Secure; HttpOnly`
+
+### 🧾 Cause
+Client Domain and Server Domain are different, so basically cookie couldn't share.
+
+### ⚡ Solution
+
+Configure cookie settings in server
+
+```
+//application.properties
+
+server.servlet.session.cookie.same-site=none
+server.servlet.session.cookie.secure=true
+```
