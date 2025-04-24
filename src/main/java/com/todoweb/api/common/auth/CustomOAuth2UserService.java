@@ -19,6 +19,8 @@ import com.todoweb.api.domain.user.LoginType;
 import com.todoweb.api.domain.user.UserRepository;
 import com.todoweb.api.domain.user.Users;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +35,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 	
 	@Autowired
 	private final HttpSession httpSession;
+	
+	private final HttpServletResponse response;
 	
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException{
@@ -69,8 +73,20 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         	user = userRepository.findByEmail(userEmail);
         }
         
+        log.info("DB ---> user: {}", user);
+        
         httpSession.setAttribute("user", new SessionUser(user));
 
+        Cookie sessionCookie = new Cookie("JSESSIONID", httpSession.getId());
+        
+        sessionCookie.setHttpOnly(true);
+        sessionCookie.setSecure(true);
+        sessionCookie.setPath("/");
+        sessionCookie.setDomain("https://planmytodos-api-production.up.railway.app"); // 필요에 따라 백엔드 도메인 설정
+        sessionCookie.setAttribute("SameSite", "None");
+        
+        response.addCookie(sessionCookie);
+        
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
                 attributes.getAttributes(),
