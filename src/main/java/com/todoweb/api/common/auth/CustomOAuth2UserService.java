@@ -76,16 +76,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         log.info("DB ---> user: {}", user);
         
         httpSession.setAttribute("user", new SessionUser(user));
-
-//        Cookie sessionCookie = new Cookie("JSESSIONID", httpSession.getId());
-//        
-//        sessionCookie.setHttpOnly(true);
-//        sessionCookie.setSecure(true);
-//        sessionCookie.setPath("/");
-//        sessionCookie.setDomain("https://planmytodos-api-production.up.railway.app");
-//        sessionCookie.setAttribute("SameSite", "None");
-//        
-//        response.addCookie(sessionCookie);
         
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
