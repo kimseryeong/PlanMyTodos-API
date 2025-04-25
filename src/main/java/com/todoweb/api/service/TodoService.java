@@ -70,7 +70,7 @@ public class TodoService {
 		
 		try {
 			
-			Users testUser = userRepository.findByEmail(testEmail);
+			Users user = userRepository.findByEmail(dto.getEmail());
 			
 			Todos entity = Todos.builder()
 					.title(dto.getTitle())
@@ -78,7 +78,7 @@ public class TodoService {
 					.completed(dto.isCompleted())
 					.startAt(dto.getStartAt())
 					.endAt(dto.getEndAt())
-					.users(testUser)
+					.users(user)
 					.build();
 			
 			log.debug("create entity: {}", entity);

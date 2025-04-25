@@ -20,4 +20,5 @@ public class TodoRequestDTO {
     private LocalDateTime startAt;
     private LocalDateTime endAt;
 	
+    private String email;
 }
