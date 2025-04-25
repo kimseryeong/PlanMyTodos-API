@@ -1,8 +1,7 @@
 package com.todoweb.api.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +42,21 @@ public class TodoService {
 				.stream()
 				.map(TodoResponseDTO::fromEntity)
 				.collect(Collectors.toList());
+	}
+	
+	/**
+	 * 날짜에 따른 목록 조회
+	 * @param users
+	 * @param date
+	 * @return
+	 */
+	@Transactional(readOnly = true)
+	public List<TodoResponseDTO> fetchTodosByDate(Users users, LocalDateTime date){
+		
+		return todoRepository.findTodosByDate(users, date)
+			.stream()
+			.map(TodoResponseDTO::fromEntity)
+			.collect(Collectors.toList());
 	}
 	
 	/**
