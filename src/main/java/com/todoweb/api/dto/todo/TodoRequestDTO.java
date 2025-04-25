@@ -1,6 +1,6 @@
 package com.todoweb.api.dto.todo;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,8 +17,9 @@ public class TodoRequestDTO {
     private String title;
     private boolean completed;
     private String content;
-    private LocalDateTime startAt;
-    private LocalDateTime endAt;
+    private LocalDate startAt;
+    private LocalDate endAt;
 	
     private String email;
+    private LocalDate currentAt;
 }

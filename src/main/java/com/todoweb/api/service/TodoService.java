@@ -1,6 +1,5 @@
 package com.todoweb.api.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,9 +50,12 @@ public class TodoService {
 	 * @return
 	 */
 	@Transactional(readOnly = true)
-	public List<TodoResponseDTO> fetchTodosByDate(Users users, LocalDateTime date){
+	public List<TodoResponseDTO> fetchTodosByDate(TodoRequestDTO dto){
 		
-		return todoRepository.findTodosByDate(users, date)
+		Users user = userRepository.findByEmail(dto.getEmail());
+		
+		
+		return todoRepository.findTodosByDate(user, dto.getCurrentAt())
 			.stream()
 			.map(TodoResponseDTO::fromEntity)
 			.collect(Collectors.toList());

@@ -1,6 +1,6 @@
 package com.todoweb.api.domain.todo;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.todoweb.api.domain.BaseTimeEntity;
 import com.todoweb.api.domain.user.Users;
@@ -40,15 +40,15 @@ public class Todos extends BaseTimeEntity {
 	
 	private String content;
 	
-	private LocalDateTime startAt;
-	private LocalDateTime endAt;
+	private LocalDate startAt;
+	private LocalDate endAt;
 	
 	@ManyToOne
 	@JoinColumn(name="user_uuid")
 	private Users users;
 	
 	@Builder
-	public Todos(String title, boolean completed, String content, LocalDateTime startAt, LocalDateTime endAt, Users users) {
+	public Todos(String title, boolean completed, String content, LocalDate startAt, LocalDate endAt, Users users) {
 		this.title = title;
 		this.completed = completed;
 		this.content = content;

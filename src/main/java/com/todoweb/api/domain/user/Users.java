@@ -1,6 +1,5 @@
 package com.todoweb.api.domain.user;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -8,8 +7,8 @@ import java.util.UUID;
 import com.todoweb.api.common.status.Role;
 import com.todoweb.api.domain.BaseTimeEntity;
 import com.todoweb.api.domain.todo.Todos;
-import com.todoweb.api.dto.user.SignUpRequestDTO;
 import com.todoweb.api.dto.user.LoginRequestDTO;
+import com.todoweb.api.dto.user.SignUpRequestDTO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

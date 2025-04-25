@@ -1,10 +1,8 @@
 package com.todoweb.api.controller;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -57,18 +55,12 @@ public class TodoController {
 		}
 	}
 	
-	@GetMapping("/fetchTodosByDate")
-	public ResponseEntity<?> fetchTodosByDate(
-			@RequestParam("email") String email,
-			@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date){
+	@PostMapping("/fetchTodosByDate")
+	public ResponseEntity<?> fetchTodosByDate(@RequestBody TodoRequestDTO dto){
 		try {
+			log.info("fetchTodosByDate dto.getEmail: {}", dto.getEmail());
 			
-			log.info("fetchTodosByDate email: {}", email);
-			log.info("fetchTodosByDate date: {}", date);
-			
-			Users user = userRepository.findByEmail(email);
-			
-			List<TodoResponseDTO> fetchedTodos = todoService.fetchTodosByDate(user, date);
+			List<TodoResponseDTO> fetchedTodos = todoService.fetchTodosByDate(dto);
 			
 			return ResponseEntity.ok().body(fetchedTodos);
 		}

@@ -1,6 +1,6 @@
 package com.todoweb.api.dto.todo;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.todoweb.api.domain.todo.Todos;
 
@@ -17,10 +17,10 @@ public class TodoDTO {
 	private String title;
 	private boolean completed;
 	private String content;
-	private LocalDateTime startAt;
-	private LocalDateTime endAt;
+	private LocalDate startAt;
+	private LocalDate endAt;
 		
-	public TodoDTO(Long id, String title, boolean completed, String content, LocalDateTime startAt, LocalDateTime endAt) {
+	public TodoDTO(Long id, String title, boolean completed, String content, LocalDate startAt, LocalDate endAt) {
 		this.id = id;
 		this.title = title;
 		this.completed = completed;
