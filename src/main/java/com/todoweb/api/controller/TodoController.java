@@ -120,4 +120,21 @@ public class TodoController {
 		}
 		
 	}
+	
+	@PostMapping("/deleteFromCalendar")
+	public ResponseEntity<?> deleteFromCalendar(@RequestBody TodoRequestDTO dto){
+		try {
+			List<TodoResponseDTO> deletedList = todoService.deleteFromCalendar(dto);
+			
+			return ResponseEntity.ok().body(deletedList);
+		}
+		catch(RuntimeException e) {
+			log.debug("While deleteTodo ... error: {}", e.getMessage());
+			e.printStackTrace();
+			
+			return null;
+		}
+		
+	}
+	
 }

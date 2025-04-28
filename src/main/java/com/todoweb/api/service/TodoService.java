@@ -159,6 +159,30 @@ public class TodoService {
 		}
 	}
 	
+	@Transactional
+	public List<TodoResponseDTO> deleteFromCalendar(TodoRequestDTO dto){
+		try {
+			Todos todo = todoRepository.findById(dto.getId())
+					.orElseThrow(() -> new RuntimeException("Not found"));
+			
+			Users todoUser = todo.getUsers();
+			
+			if(!todoUser.getEmail().equals(dto.getEmail())) {
+				new RuntimeException("No Permission User to update");
+			}
+			
+			todoRepository.deleteById(dto.getId());
+		
+			return fetchAllTodos(todoUser);
+			
+		}
+		catch(RuntimeException e) {
+			log.debug("error: {}", e.getMessage());
+			log.error("error during save: ", e);
+			return null;
+		}
+	}
+	
 	//test user 객체 임의 생성
 	public Users saveTestUser() {
 		Users testUser = Users.builder()
