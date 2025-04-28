@@ -34,7 +34,7 @@ public class TodoController {
 	@Autowired
 	private UserRepository userRepository;
 
-	@GetMapping("/fetchAllTodos")
+	@PostMapping("/fetchAllTodos")
 	public ResponseEntity<?> fetchAllTodos(@RequestParam("email") String email){
 		try {
 			
