@@ -28,8 +28,6 @@ public class TodoService {
 	@Autowired
 	private final TodoRespository todoRepository;
 	
-	String testEmail = "test@test.com";
-	
 	/**
 	 * 전체 목록 조회
 	 * @return
