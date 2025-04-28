@@ -35,10 +35,10 @@ public class TodoController {
 	private UserRepository userRepository;
 
 	@PostMapping("/fetchAllTodos")
-	public ResponseEntity<?> fetchAllTodos(@RequestParam("email") String email){
+	public ResponseEntity<?> fetchAllTodos(@RequestBody TodoRequestDTO dto){
 		try {
 			
-			Users user = userRepository.findByEmail(email);
+			Users user = userRepository.findByEmail(dto.getEmail());
 			
 			List<TodoResponseDTO> fetchedTodos = todoService.fetchAllTodos(user);
 			
