@@ -58,11 +58,11 @@ public class Todos extends BaseTimeEntity {
 	}
 
 	public void updateInfo(TodoRequestDTO dto) {
-		this.title = dto.getTitle();
+		if(dto.getTitle() != null) this.title = dto.getTitle();
+		if(dto.getContent() != null) this.content = dto.getContent();
+		if(dto.getStartAt() != null) this.startAt = dto.getStartAt();
+		if(dto.getEndAt() != null) this.endAt = dto.getEndAt();
 		this.completed = dto.isCompleted();
-		this.content = dto.getContent();
-		this.startAt = dto.getStartAt();
-		this.endAt = dto.getEndAt();
 	}
 	
 }
