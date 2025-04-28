@@ -11,10 +11,8 @@ import lombok.Getter;
 public class SessionUser implements Serializable{
 
 	private String email;
-	private UUID id;
 	
 	public SessionUser(Users user) {
 		this.email = user.getEmail();
-		this.id = user.getUuid();
 	}
 }

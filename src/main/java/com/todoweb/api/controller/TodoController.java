@@ -89,17 +89,12 @@ public class TodoController {
 		}
 	}
 	
-	@PutMapping("/updateTodo/{id}")
-	public ResponseEntity<?> updateTodo(
-			@PathVariable("id") Long id,
-			@RequestBody TodoRequestDTO dto){
+	@PostMapping("/updateTodo")
+	public ResponseEntity<?> updateTodo(@RequestBody TodoRequestDTO dto){
 		
 		try {
 			
-			log.debug("While updateTodo ... id: {}", id);
-			dto.setId(id);
-			
-			TodoResponseDTO updatedTodos = todoService.update(dto, testEmail);
+			TodoResponseDTO updatedTodos = todoService.update(dto);
 			
 			log.debug("While updateTodo ... updatedTodos: {}", updatedTodos);
 			

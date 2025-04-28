@@ -105,7 +105,7 @@ public class TodoService {
 	 * @return
 	 */
 	@Transactional
-	public TodoResponseDTO update(TodoRequestDTO dto, String userEmail) {
+	public TodoResponseDTO update(TodoRequestDTO dto) {
 		try {
 			
 			Todos todo = todoRepository.findById(dto.getId())
@@ -113,7 +113,7 @@ public class TodoService {
 			
 			Users todoUser = todo.getUsers();
 			
-			if(!todoUser.getEmail().equals(userEmail)) {
+			if(!todoUser.getEmail().equals(dto.getEmail())) {
 				new RuntimeException("No Permission User to update");
 			}
 			
