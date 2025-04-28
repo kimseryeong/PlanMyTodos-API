@@ -33,10 +33,7 @@ public class TodoController {
 	
 	@Autowired
 	private UserRepository userRepository;
-	
 
-	String testEmail = "test@test.com";
-	
 	@GetMapping("/fetchAllTodos")
 	public ResponseEntity<?> fetchAllTodos(@RequestParam("email") String email){
 		try {
@@ -108,10 +105,10 @@ public class TodoController {
 		}
 	}
 	
-	@DeleteMapping("/deleteTodo/{id}")
-	public ResponseEntity<?> deleteTodo(@PathVariable("id") Long id){
+	@PostMapping("/deleteTodo")
+	public ResponseEntity<?> deleteTodo(@RequestBody TodoRequestDTO dto){
 		try {
-			List<TodoResponseDTO> deletedList = todoService.delete(id, testEmail);
+			List<TodoResponseDTO> deletedList = todoService.delete(dto);
 			
 			return ResponseEntity.ok().body(deletedList);
 		}

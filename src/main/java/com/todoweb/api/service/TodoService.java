@@ -136,20 +136,20 @@ public class TodoService {
 	 * @return
 	 */
 	@Transactional
-	public List<TodoResponseDTO> delete(Long todoId, String userEmail){
+	public List<TodoResponseDTO> delete(TodoRequestDTO dto){
 		try {
-			Todos todo = todoRepository.findById(todoId)
+			Todos todo = todoRepository.findById(dto.getId())
 					.orElseThrow(() -> new RuntimeException("Not found"));
 			
 			Users todoUser = todo.getUsers();
 			
-			if(!todoUser.getEmail().equals(userEmail)) {
+			if(!todoUser.getEmail().equals(dto.getEmail())) {
 				new RuntimeException("No Permission User to update");
 			}
 			
-			todoRepository.deleteById(todoId);
+			todoRepository.deleteById(dto.getId());
 			
-			return fetchAllTodos(todoUser);
+			return fetchTodosByDate(dto);
 			
 		}
 		catch(RuntimeException e) {
