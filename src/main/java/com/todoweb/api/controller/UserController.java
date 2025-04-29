@@ -91,6 +91,7 @@ public class UserController<T> {
 		
 		Map<String, Object> response = new HashMap();
 		
+		response.put("success", true);
 		response.put("message", "로그아웃 되었습니다.");
 		
 		return ResponseEntity.ok(response);
