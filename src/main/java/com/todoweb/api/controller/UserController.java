@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.todoweb.api.common.auth.CustomUserDetails;
 import com.todoweb.api.common.auth.dto.SessionUser;
 import com.todoweb.api.dto.user.LoginRequestDTO;
 import com.todoweb.api.dto.user.SignUpRequestDTO;
@@ -74,15 +75,14 @@ public class UserController<T> {
     }
 	
 	@GetMapping("/me")
-	public ResponseEntity<SessionUser> getUserSession(){
+	public ResponseEntity<SessionUser> getUserSession(@AuthenticationPrincipal CustomUserDetails userDetails){
 		
-		SessionUser user = (SessionUser) httpSession.getAttribute("user");
+		if (userDetails == null) {
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+	    }
 		
-		if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-		
-        return ResponseEntity.ok(user); 
+		SessionUser sessionUser = new SessionUser(userDetails.getUser());
+	    return ResponseEntity.ok(sessionUser);
 	}
 	
 	@GetMapping("/successLogout")
