@@ -43,7 +43,7 @@ public class SecurityConfig {
 	        		.defaultSuccessUrl("https://planmytodos.netlify.app", true)
 	        		
     		)
-	        .logout(logout -> logout.logoutSuccessUrl("/"));
+	        .logout(logout -> logout.logoutSuccessUrl("/user/successLogout"));
 		
 		
 	    return http.build();

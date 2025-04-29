@@ -1,5 +1,8 @@
 package com.todoweb.api.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +20,6 @@ import com.todoweb.api.dto.user.SignUpRequestDTO;
 import com.todoweb.api.dto.user.UserResponseDTO;
 import com.todoweb.api.service.UserService;
 
-import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
@@ -81,6 +83,17 @@ public class UserController<T> {
         }
 		
         return ResponseEntity.ok(user); 
+	}
+	
+	@GetMapping("/successLogout")
+	public ResponseEntity<?> successLogout(){
+		log.info("successLogout");
+		
+		Map<String, Object> response = new HashMap();
+		
+		response.put("message", "로그아웃 되었습니다.");
+		
+		return ResponseEntity.ok(response);
 	}
 
 }
