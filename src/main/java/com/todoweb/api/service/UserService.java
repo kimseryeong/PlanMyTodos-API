@@ -1,6 +1,7 @@
 package com.todoweb.api.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,9 @@ public class UserService {
     private final UserRepository userRepository;
 
 	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	
+	@Autowired
+	private HttpSession httpSession;
 	
 	/**
 	 * 사용자 여부
@@ -96,6 +100,8 @@ public class UserService {
 					.isError(true)
 					.build();
 		}
+		
+		httpSession.setAttribute("user", new SessionUser(user));
 		
 		return UserResponseDTO.fromEntity(user, "로그인 되었습니다.", false);
 		
