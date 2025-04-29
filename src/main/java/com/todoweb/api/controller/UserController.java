@@ -77,12 +77,17 @@ public class UserController<T> {
 	@GetMapping("/me")
 	public ResponseEntity<SessionUser> getUserSession(@AuthenticationPrincipal CustomUserDetails userDetails){
 		
+		log.info("user/me ... userDetails: {}", userDetails.toString());
+		log.info("user/me ... userDetails.getUser: {}", userDetails.getUser());
+		
 		if (userDetails == null) {
 	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	    }
 		
 		SessionUser sessionUser = new SessionUser(userDetails.getUser());
-	    return ResponseEntity.ok(sessionUser);
+		log.info("user/me ... sessionUser: {}", sessionUser.getEmail());
+		
+		return ResponseEntity.ok(sessionUser);
 	}
 	
 	@GetMapping("/successLogout")
