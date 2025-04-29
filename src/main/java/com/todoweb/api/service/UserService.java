@@ -1,10 +1,15 @@
 package com.todoweb.api.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.server.Session;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.todoweb.api.common.auth.CustomUserDetails;
 import com.todoweb.api.common.auth.dto.SessionUser;
 import com.todoweb.api.common.status.Role;
 import com.todoweb.api.domain.user.LoginType;
@@ -103,6 +108,14 @@ public class UserService {
 		
 		httpSession.setAttribute("user", new SessionUser(user));
 		
+		UserDetails userDetails = new CustomUserDetails(user);
+		
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, dto.getPassword(), userDetails.getAuthorities());
+		context.setAuthentication(authentication);
+		
+		SecurityContextHolder.setContext(context);
+        
 		return UserResponseDTO.fromEntity(user, "로그인 되었습니다.", false);
 		
 		
