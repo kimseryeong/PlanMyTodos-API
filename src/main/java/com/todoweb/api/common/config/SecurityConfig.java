@@ -34,7 +34,7 @@ public class SecurityConfig {
 	        .csrf(csrf -> csrf.disable())
 	        .authorizeHttpRequests(requests -> requests
 	        		.requestMatchers("/", "/user/**", "/oauth2/**").permitAll()
-		            .anyRequest().permitAll()
+		            .anyRequest().authenticated()
             )
 	        .oauth2Login(oauth -> oauth
 	        		.userInfoEndpoint(userInfo -> userInfo
@@ -53,7 +53,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        configuration.setAllowedOrigins(List.of("https://planmytodos.netlify.app/", "http://localhost:3000"));
+        configuration.setAllowedOrigins(List.of("https://planmytodos.netlify.app/", "https://planmytodos.netlify.app", "http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-XSRF-TOKEN"));
         configuration.setAllowCredentials(true);
