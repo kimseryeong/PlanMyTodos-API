@@ -26,8 +26,7 @@ public class UserService {
 	@Autowired
     private final UserRepository userRepository;
 
-	@Autowired
-	private final HttpSession httpSession;
+	private HttpSession httpSession;
 	
 	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	
