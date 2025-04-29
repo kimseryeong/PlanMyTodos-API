@@ -11,9 +11,5 @@ public class SignUpRequestDTO {
 
 	private String email;
 	private String password;
-	private String confirmPassword;
-	
-	public String getConfirmPassword() {
-		return this.confirmPassword;
-	}
+	private String passwordCheck;
 }

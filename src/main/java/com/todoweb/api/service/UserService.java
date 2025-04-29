@@ -44,7 +44,7 @@ public class UserService {
 	@Transactional
 	public UserResponseDTO signUp(SignUpRequestDTO dto) {
 		
-		log.info("UserService signup ... getConfirmPassword: {}", dto.getConfirmPassword());
+		log.info("UserService signup ... getPasswordCheck: {}", dto.getPasswordCheck());
 		log.info("UserService signup ... getPassword: {}", dto.getPassword());
 		
 		if(userRepository.existsByEmail(dto.getEmail())) {
@@ -57,7 +57,7 @@ public class UserService {
 					.build();
 		}
 		
-		if(!dto.getPassword().equals(dto.getConfirmPassword())) {
+		if(!dto.getPassword().equals(dto.getPasswordCheck())) {
 			log.info("비밀번호가 일치하지 않습니다");
 
 			return UserResponseDTO.builder()
