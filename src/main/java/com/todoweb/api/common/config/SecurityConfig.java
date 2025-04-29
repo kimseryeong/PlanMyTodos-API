@@ -16,6 +16,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.todoweb.api.common.auth.CustomOAuth2UserService;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -41,7 +42,9 @@ public class SecurityConfig {
     				)
 	        		.defaultSuccessUrl("https://planmytodos.netlify.app", true)
 	        		
-    		);
+    		)
+	        .logout(logout -> logout.logoutSuccessUrl("/"));
+		
 		
 	    return http.build();
 	}
@@ -50,7 +53,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        configuration.setAllowedOrigins(List.of("https://planmytodos.netlify.app/", "http://localhost:3000/"));
+        configuration.setAllowedOrigins(List.of("https://planmytodos.netlify.app/", "http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-XSRF-TOKEN"));
         configuration.setAllowCredentials(true);
