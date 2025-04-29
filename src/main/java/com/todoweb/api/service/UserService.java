@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.todoweb.api.common.auth.dto.SessionUser;
 import com.todoweb.api.common.status.Role;
 import com.todoweb.api.domain.user.LoginType;
 import com.todoweb.api.domain.user.UserRepository;
@@ -12,6 +13,7 @@ import com.todoweb.api.dto.user.LoginRequestDTO;
 import com.todoweb.api.dto.user.SignUpRequestDTO;
 import com.todoweb.api.dto.user.UserResponseDTO;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +26,10 @@ public class UserService {
 	@Autowired
     private final UserRepository userRepository;
 
-	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	@Autowired
+	private final HttpSession httpSession;
 	
+	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	
 	/**
 	 * 사용자 여부
@@ -80,6 +84,8 @@ public class UserService {
 		
 		UserResponseDTO result = UserResponseDTO.fromEntity(savedEntity, "등록되었습니다.", false);
 		
+		httpSession.setAttribute("user", new SessionUser(entity));
+		
 		return result;
 	}
 	
@@ -95,6 +101,8 @@ public class UserService {
 					.isError(true)
 					.build();
 		}
+		
+		httpSession.setAttribute("user", new SessionUser(user));
 		
 		return UserResponseDTO.fromEntity(user, "로그인 되었습니다.", false);
 		
