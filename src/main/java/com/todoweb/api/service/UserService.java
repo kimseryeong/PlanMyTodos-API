@@ -26,8 +26,6 @@ public class UserService {
 	@Autowired
     private final UserRepository userRepository;
 
-	private HttpSession httpSession;
-	
 	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	
 	/**
@@ -83,8 +81,6 @@ public class UserService {
 		
 		UserResponseDTO result = UserResponseDTO.fromEntity(savedEntity, "등록되었습니다.", false);
 		
-		httpSession.setAttribute("user", new SessionUser(entity));
-		
 		return result;
 	}
 	
@@ -100,8 +96,6 @@ public class UserService {
 					.isError(true)
 					.build();
 		}
-		
-		httpSession.setAttribute("user", new SessionUser(user));
 		
 		return UserResponseDTO.fromEntity(user, "로그인 되었습니다.", false);
 		
