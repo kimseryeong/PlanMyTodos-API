@@ -1,15 +1,10 @@
 package com.todoweb.api.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.todoweb.api.common.auth.CustomUserDetails;
 import com.todoweb.api.common.auth.dto.SessionUser;
 import com.todoweb.api.common.status.Role;
 import com.todoweb.api.domain.user.LoginType;
@@ -96,9 +91,11 @@ public class UserService {
 	@Transactional
 	public UserResponseDTO login(LoginRequestDTO dto) {
 		
-		Users user = userRepository.findByEmail(dto.getEmail());
+		Users user = userRepository.findByEmail(dto.getEmail())
+			    .orElseThrow(() -> new UsernameNotFoundException("아이디와 비밀번호를 확인하세요."));
+
 		
-		if(user == null || !passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
+		if(!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
 			return UserResponseDTO.builder()
 					.email(null)
 					.message("아이디와 비밀번호를 확인하세요.")
@@ -106,11 +103,7 @@ public class UserService {
 					.build();
 		}
 		
-		httpSession.setAttribute("user", new SessionUser(user));
-		
 		return UserResponseDTO.fromEntity(user, "로그인 되었습니다.", false);
-		
-		
 	}
 	
 }

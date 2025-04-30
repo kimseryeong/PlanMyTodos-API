@@ -5,14 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.todoweb.api.domain.user.UserRepository;
@@ -38,7 +34,8 @@ public class TodoController {
 	public ResponseEntity<?> fetchAllTodos(@RequestBody TodoRequestDTO dto){
 		try {
 			
-			Users user = userRepository.findByEmail(dto.getEmail());
+			Users user = userRepository.findByEmail(dto.getEmail())
+					.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 			
 			List<TodoResponseDTO> fetchedTodos = todoService.fetchAllTodos(user);
 			

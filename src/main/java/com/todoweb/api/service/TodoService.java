@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,8 +51,8 @@ public class TodoService {
 	@Transactional(readOnly = true)
 	public List<TodoResponseDTO> fetchTodosByDate(TodoRequestDTO dto){
 		
-		Users user = userRepository.findByEmail(dto.getEmail());
-		
+		Users user = userRepository.findByEmail(dto.getEmail())
+			.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 		
 		return todoRepository.findTodosByDate(user, dto.getCurrentAt())
 			.stream()
@@ -70,7 +71,8 @@ public class TodoService {
 		
 		try {
 			
-			Users user = userRepository.findByEmail(dto.getEmail());
+			Users user = userRepository.findByEmail(dto.getEmail())
+					.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 			
 			Todos entity = Todos.builder()
 					.title(dto.getTitle())

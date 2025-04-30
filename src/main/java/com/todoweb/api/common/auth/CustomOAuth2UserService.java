@@ -48,19 +48,15 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         
         String userEmail = attributes.getEmail();
 		
-        Users user = null;
-        if(!userRepository.existsByEmail(userEmail)) {
-        	user = Users.builder()
-	        				.email(userEmail)
-	        				.loginType(LoginType.GOOGLE)
-	        				.role(Role.USER)
-	        				.build();
-        	
-        	userRepository.save(user);
-        }
-        else {
-        	user = userRepository.findByEmail(userEmail);
-        }
+        Users user = userRepository.findByEmail(userEmail)
+        	    .orElseGet(() -> {
+        	        Users newUser = Users.builder()
+        	                .email(userEmail)
+        	                .loginType(LoginType.GOOGLE)
+        	                .role(Role.USER)
+        	                .build();
+        	        return userRepository.save(newUser);
+        	    });
         
         httpSession.setAttribute("user", new SessionUser(user));
         
