@@ -108,14 +108,6 @@ public class UserService {
 		
 		httpSession.setAttribute("user", new SessionUser(user));
 		
-		UserDetails userDetails = new CustomUserDetails(user);
-		
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, dto.getPassword(), userDetails.getAuthorities());
-		context.setAuthentication(authentication);
-		
-		SecurityContextHolder.setContext(context);
-        
 		return UserResponseDTO.fromEntity(user, "로그인 되었습니다.", false);
 		
 		
