@@ -13,7 +13,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.todoweb.api.common.auth.CustomOAuth2UserService;
+import com.todoweb.api.common.auth.oauth.CustomOAuth2UserService;
 
 import lombok.RequiredArgsConstructor;
 
