@@ -35,4 +35,12 @@ public class TodoResponseDTO {
 		        .build();
 	}
 	
+	public TodoResponseDTO(String title, String content, LocalDate startAt, LocalDate endAt, boolean completed) {
+		this.title = title;
+		this.content = content;
+		this.startAt = startAt;
+		this.endAt = endAt;
+		this.completed = completed;
+	}
+
 }
