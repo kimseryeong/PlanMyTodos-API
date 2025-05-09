@@ -53,17 +53,17 @@ public class TodoService {
 	public List<TodoResponseDTO> fetchTodosByDate(TodoRequestDTO dto){
 		
 		
-		Users user = userRepository.findByEmail(dto.getEmail()).orElseGet(null);
-			//.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
-		
-		if(user != null) {
+		if(dto.getEmail() == null) {
+			return getSampleTodos(dto.getCurrentAt());
+		}
+		else {
+			Users user = userRepository.findByEmail(dto.getEmail())
+					.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+			
 			return todoRepository.findTodosByDate(user, dto.getCurrentAt())
 					.stream()
 					.map(TodoResponseDTO::fromEntity)
 					.collect(Collectors.toList());
-		}
-		else {
-			return getSampleTodos(dto.getCurrentAt());
 		}
 	}
 	
