@@ -24,4 +24,8 @@ public class UserResponseDTO {
 				.isError(isError)
 				.build();
 	}
+	
+	public UserResponseDTO(String email) {
+		this.email = email;
+	}
 }
