@@ -1,6 +1,5 @@
 package com.todoweb.api.todo.service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,9 +34,13 @@ public class TodoService {
 	 * @return
 	 */
 	@Transactional(readOnly = true)
-	public List<TodoResponseDTO> fetchAllTodos(Users users){
+	public List<TodoResponseDTO> fetchAllTodos(TodoRequestDTO dto){
 		
-		return todoRepository.findByUsers(users)
+		Users user = userRepository.findByEmail(dto.getEmail())
+				.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+		
+		
+		return todoRepository.findByUsers(user)
 				.stream()
 				.map(TodoResponseDTO::fromEntity)
 				.collect(Collectors.toList());
@@ -51,30 +54,14 @@ public class TodoService {
 	 */
 	@Transactional(readOnly = true)
 	public List<TodoResponseDTO> fetchTodosByDate(TodoRequestDTO dto){
+
+		Users user = userRepository.findByEmail(dto.getEmail())
+				.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 		
-		
-		if(dto.getEmail() == null) {
-			return getSampleTodos(dto.getCurrentAt());
-		}
-		else {
-			Users user = userRepository.findByEmail(dto.getEmail())
-					.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
-			
-			return todoRepository.findTodosByDate(user, dto.getCurrentAt())
-					.stream()
-					.map(TodoResponseDTO::fromEntity)
-					.collect(Collectors.toList());
-		}
-	}
-	
-	public List<TodoResponseDTO> getSampleTodos(LocalDate currentAt){
-		return List.of(
-				new TodoResponseDTO("Use PlanMyTodos", "add, modify, delete", currentAt, currentAt, false),
-				new TodoResponseDTO("Buy groceries", "carrot, tofu, potato, salmon", currentAt, currentAt, false),
-				new TodoResponseDTO("Work out at the fitness center", "1. Running Machine \n2. Squat", currentAt.plusDays(1), currentAt, true),
-				new TodoResponseDTO("Clean the house", "", currentAt.plusWeeks(1), currentAt, true),
-				new TodoResponseDTO("Take supplements", "vitaminD, biotin, lactobacillus", currentAt.minusDays(5), currentAt, false)
-		);
+		return todoRepository.findTodosByDate(user, dto.getCurrentAt())
+				.stream()
+				.map(TodoResponseDTO::fromEntity)
+				.collect(Collectors.toList());
 	}
 	
 	/**

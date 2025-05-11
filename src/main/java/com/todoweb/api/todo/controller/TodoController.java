@@ -26,18 +26,11 @@ public class TodoController {
 
 	@Autowired
 	private TodoService todoService;
-	
-	@Autowired
-	private UserRepository userRepository;
 
 	@PostMapping("/fetchAllTodos")
 	public ResponseEntity<?> fetchAllTodos(@RequestBody TodoRequestDTO dto){
 		try {
-			
-			Users user = userRepository.findByEmail(dto.getEmail())
-					.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
-			
-			List<TodoResponseDTO> fetchedTodos = todoService.fetchAllTodos(user);
+			List<TodoResponseDTO> fetchedTodos = todoService.fetchAllTodos(dto);
 			
 			return ResponseEntity.ok().body(fetchedTodos);
 		}
