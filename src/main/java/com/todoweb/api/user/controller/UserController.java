@@ -98,22 +98,6 @@ public class UserController {
         return ResponseEntity.ok().body(oauth2User.getAttribute("email").toString());
     }
 	
-	@GetMapping("/me")
-	public ResponseEntity<SessionUser> getUserSession(@AuthenticationPrincipal CustomUserDetails userDetails){
-		
-		log.info("user/me ... userDetails: {}", userDetails.toString());
-		log.info("user/me ... userDetails.getUser: {}", userDetails.getUser());
-		
-		if (userDetails == null) {
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-	    }
-		
-		SessionUser sessionUser = new SessionUser(userDetails.getUser());
-		log.info("user/me ... sessionUser: {}", sessionUser.getEmail());
-		
-		return ResponseEntity.ok(sessionUser);
-	}
-	
 	@GetMapping("/successLogout")
 	public ResponseEntity<?> successLogout(){
 		log.info("successLogout");
@@ -131,7 +115,7 @@ public class UserController {
 	
 		String email = null;
 		
-		
+		log.info("authentication: {}", authentication);
 		if(authentication != null) {
 			OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
 			email = oAuth2User.getAttribute("email");
@@ -141,6 +125,8 @@ public class UserController {
 		UserResponseDTO res = UserResponseDTO.builder()
 									.email(email)
 									.build();
+		
+		log.info("/user/info res: {}", res);
 		
 		return ResponseEntity.ok(res);
 	}
